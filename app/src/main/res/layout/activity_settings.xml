@@ -1,0 +1,194 @@
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:background="#F1F0F5"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#AAFFFFFF"
+                android:fontFamily="sans-serif-thin"
+                android:text="describe.it"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="32dp"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:layout_editor_absoluteX="-167dp"
+                tools:layout_editor_absoluteY="16dp">
+
+                <Switch
+                    android:id="@+id/synsSwitch"
+                    android:layout_width="315dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="176dp"
+                    android:checked="true"
+                    android:text="Synonyms"
+                    android:textColor="#000000"
+                    android:textColorHint="#0000"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.495"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Switch
+                    android:id="@+id/adjectivesSwitch"
+                    android:layout_width="315dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="15dp"
+                    android:checked="true"
+                    android:text="Adjectives"
+                    android:textColor="#FF000000"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/nounsSwitch" />
+
+                <Switch
+                    android:id="@+id/verbsSwitch"
+                    android:layout_width="315dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="15dp"
+                    android:checked="true"
+                    android:text="Verbs"
+                    android:textColor="#FF000000"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.51"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/adjectivesSwitch" />
+
+                <Switch
+                    android:id="@+id/nounsSwitch"
+                    android:layout_width="315dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="12dp"
+                    android:checked="true"
+                    android:text="Nouns"
+                    android:textColor="#000000"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.497"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/synsSwitch" />
+
+                <TextView
+                    android:id="@+id/lbl1"
+                    android:layout_width="355dp"
+                    android:layout_height="30dp"
+                    android:text="Number of Words From API"
+                    android:textColor="#000000"
+                    app:layout_constraintBottom_toTopOf="@+id/randomWordsNum"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/lbl"
+                    android:layout_width="355dp"
+                    android:layout_height="30dp"
+                    android:text="Filter Word Tags"
+                    android:textColor="#000000"
+                    app:layout_constraintBottom_toTopOf="@+id/synsSwitch"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <EditText
+                    android:id="@+id/randomWordsNum"
+                    android:layout_width="315dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="56dp"
+                    android:backgroundTint="@color/cardview_dark_background"
+                    android:ems="10"
+                    android:hint="3"
+                    android:inputType="number"
+                    android:textColor="#000000"
+                    android:textColorHint="#AAAAAA"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.51"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/verbsSwitch" />
+
+                <Button
+                    android:id="@+id/applyBtn"
+                    android:layout_width="137dp"
+                    android:layout_height="43dp"
+                    android:layout_marginStart="44dp"
+                    android:text="Apply"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/randomWordsNum" />
+
+                <Button
+                    android:id="@+id/defaultBtn"
+                    android:layout_width="137dp"
+                    android:layout_height="43dp"
+                    android:layout_marginEnd="44dp"
+                    android:text="Reset"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.938"
+                    app:layout_constraintStart_toEndOf="@+id/applyBtn"
+                    app:layout_constraintTop_toBottomOf="@+id/randomWordsNum" />
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="53dp"
+                    android:layout_height="53dp"
+                    android:layout_marginStart="28dp"
+                    android:layout_marginTop="64dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_action_settings" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="304dp"
+                    android:layout_height="53dp"
+                    android:layout_marginTop="64dp"
+                    android:background="#1AFFFFFF"
+                    android:fontFamily="sans-serif"
+                    android:text="Settings"
+                    android:textAlignment="center"
+                    android:textColor="#000000"
+                    android:textSize="32dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/imageView"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/goBackFromSettings"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/transparent"
+                    android:scaleType="fitCenter"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_action_arrow_right" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
+</LinearLayout>
