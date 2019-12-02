@@ -9,13 +9,14 @@ public class CrossAppVariables {
     public static boolean SHOULD_GET_VERBS = true;
     public static boolean SHOULD_GET_PROP = true;//TODO ADAPT SETTINGS FOR THIS
     public static int NUMBER_RANDOM_RETRIEVAL = 4;
+    public static int GAME_GRAPH_DEPTH = 1;
 
     public static boolean USER_IN_EXPLORE = false;
     public static boolean USER_IN_MAIN = false;
 
     // Constants
     public final static String SYNOM_KEY = "syn";
-    public final static String NOUN_KEY = "v";
+    public final static String NOUN_KEY = "n";
     public final static String ADJECTIVE_KEY = "adj";
     public final static String VERB_KEY = "v";
     public final static String PROP_KEY = "prop";

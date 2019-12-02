@@ -26,6 +26,7 @@ public class SettingsActivity extends AppCompatActivity {
     Switch adjectivesSwitch;
     Switch verbsSwitch;
     EditText numberOfRandom;
+    EditText gameGraphDepth;
     Button applySettings;
     Button resetSettings;
     ImageButton goBack;
@@ -44,6 +45,7 @@ public class SettingsActivity extends AppCompatActivity {
         adjectivesSwitch = findViewById(R.id.adjectivesSwitch);
         verbsSwitch = findViewById(R.id.verbsSwitch);
         numberOfRandom = findViewById(R.id.randomWordsNum);
+        gameGraphDepth = findViewById(R.id.graphDifficultyNum);
         applySettings = findViewById(R.id.applyBtn);
         resetSettings = findViewById(R.id.defaultBtn);
         goBack = findViewById(R.id.goBackFromSettings);
@@ -58,25 +60,35 @@ public class SettingsActivity extends AppCompatActivity {
                 crossFadeIntent(appCompatActivity, goBackGraphIntent);
            }
        });
+       resetSettings.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               settings.resetSettings();
+               settings.commitSettings();
+               putValuesFromSettings(settings);
+           }
+       });
        applySettings.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
-               int contador = 0;
+               int counter = 0;
                if (synonymsSwitch.isChecked())
-                   contador += 1;
+                   counter += 1;
                if (nounsSwitch.isChecked())
-                   contador += 1;
+                   counter += 1;
                if (adjectivesSwitch.isChecked())
-                   contador += 1;
+                   counter += 1;
                if (verbsSwitch.isChecked())
-                   contador += 1;
-               int numeroSelecionado = Integer.valueOf(numberOfRandom.getText().toString());
-               if( contador >0 && numeroSelecionado > 1){
+                   counter += 1;
+               int selectedRandomNum = Integer.valueOf(numberOfRandom.getText().toString());
+               int selectedGraphDepth = Integer.valueOf(gameGraphDepth.getText().toString());
+               if( counter >0 && selectedRandomNum > 1 && selectedGraphDepth > 0){
                    settings.setSyns(synonymsSwitch.isChecked());
                    settings.setNouns(nounsSwitch.isChecked());
                    settings.setAdjective(adjectivesSwitch.isChecked());
                    settings.setVerbs(verbsSwitch.isChecked());
-                   settings.getRandomwordsnum(numeroSelecionado);
+                   settings.setRandomWordsNum(selectedRandomNum);
+                   settings.setGameGraphDepth(selectedGraphDepth);
                    settings.commitSettings();
                    Toast.makeText(applySettings.getContext(), "Settings Saved!", Toast.LENGTH_LONG).show();
                }
@@ -91,11 +103,16 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         settings = new DescribeItSettings(this.getBaseContext());
+        putValuesFromSettings(settings);
+    }
+
+    protected void putValuesFromSettings(DescribeItSettings settings){
         synonymsSwitch.setChecked(settings.isSyns());
         nounsSwitch.setChecked(settings.isNouns());
         adjectivesSwitch.setChecked(settings.isAdjective());
         verbsSwitch.setChecked(settings.isVerbs());
-        numberOfRandom.setText(""+settings.getRandomwordsnum());
+        numberOfRandom.setText(""+settings.getRandomWordsNum());
+        gameGraphDepth.setText(""+settings.getGameGraphDepth());
     }
 
 }

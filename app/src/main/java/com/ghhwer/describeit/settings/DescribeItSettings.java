@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import static com.ghhwer.describeit.CrossAppVariables.NUMBER_RANDOM_RETRIEVAL;
+import static com.ghhwer.describeit.CrossAppVariables.GAME_GRAPH_DEPTH;
 import static com.ghhwer.describeit.CrossAppVariables.SHARED_PREFERENCE_NAME;
 import static com.ghhwer.describeit.CrossAppVariables.SHOULD_GET_ADJECTIVE;
 import static com.ghhwer.describeit.CrossAppVariables.SHOULD_GET_NOUNS;
@@ -15,7 +16,8 @@ public class DescribeItSettings {
     private boolean nouns = true;
     private boolean adjective = true;
     private boolean verbs = true;
-    private int randomwordsnum = 10;
+    private int randomWordsNum = 3;
+    private int gameGraphDepth = 1;
     private SharedPreferences preferences;
 
     public DescribeItSettings(Context ctx){
@@ -29,7 +31,8 @@ public class DescribeItSettings {
         SHOULD_GET_NOUNS = nouns;
         SHOULD_GET_ADJECTIVE = adjective;
         SHOULD_GET_VERBS = verbs;
-        NUMBER_RANDOM_RETRIEVAL = randomwordsnum;
+        NUMBER_RANDOM_RETRIEVAL = randomWordsNum;
+        GAME_GRAPH_DEPTH = gameGraphDepth;
     }
 
     public void commitSettings(){
@@ -38,9 +41,19 @@ public class DescribeItSettings {
         edit.putBoolean("nouns", nouns);
         edit.putBoolean("adjective", adjective);
         edit.putBoolean("verbs", verbs);
-        edit.putInt("randomwordsnum", randomwordsnum);
+        edit.putInt("randomWordsNum", randomWordsNum);
+        edit.putInt("gameGraphDepth", gameGraphDepth);
         edit.commit();
         refreshGlobals();
+    }
+
+    public void resetSettings(){
+        syns = true;
+        nouns = true;
+        adjective = true;
+        verbs = true;
+        randomWordsNum = 3;
+        gameGraphDepth = 1;
     }
 
     public DescribeItSettings getSettings(){
@@ -48,7 +61,8 @@ public class DescribeItSettings {
         nouns = preferences.getBoolean("nouns", true);
         adjective = preferences.getBoolean("adjective", true);
         verbs = preferences.getBoolean("verbs", true);
-        randomwordsnum = preferences.getInt("randomwordsnum", 3);
+        randomWordsNum = preferences.getInt("randomWordsNum", 3);
+        gameGraphDepth = preferences.getInt("gameGraphDepth", 1);
         return this;
     }
 
@@ -84,8 +98,14 @@ public class DescribeItSettings {
         this.verbs = verbs;
     }
 
-    public int getRandomwordsnum() {
-        return randomwordsnum;
+    public int getRandomWordsNum() {
+        return randomWordsNum;
     }
-    public void getRandomwordsnum(int num) { this.randomwordsnum = num; }
+    public int getGameGraphDepth() {
+        return gameGraphDepth;
+    }
+
+    public void setRandomWordsNum(int num) { this.randomWordsNum = num; }
+    public void setGameGraphDepth(int num) { this.gameGraphDepth = num; }
+
 }

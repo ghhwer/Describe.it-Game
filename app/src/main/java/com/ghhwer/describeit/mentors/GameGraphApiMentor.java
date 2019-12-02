@@ -6,14 +6,14 @@ import com.ghhwer.describeit.mentors.structures.GraphStruct;
 
 import java.util.ArrayList;
 
+import static com.ghhwer.describeit.CrossAppVariables.GAME_GRAPH_DEPTH;
 import static com.ghhwer.describeit.CrossAppVariables.NUMBER_RANDOM_RETRIEVAL;
 
 public abstract class GameGraphApiMentor extends GraphApiMentor {
 
-    private boolean alreadyDecided;
+    private int expectedNumOfNodes;
     private int numOfMoves = 0;
-    private int currentLayer;
-    private int maxGameLayerDepth_ = 1;
+    private int currentLayer = 0;
     private String targetWord;
     private String startWord;
     private ArrayList<GraphStruct> fullGraph = new ArrayList<>();
@@ -24,10 +24,15 @@ public abstract class GameGraphApiMentor extends GraphApiMentor {
 
     private void resetGameVariables(){
         // Reset Variables
-        alreadyDecided = false;
+        expectedNumOfNodes = 0;
+        for(int i = 1; i <= GAME_GRAPH_DEPTH;i++)
+            expectedNumOfNodes += Math.pow(NUMBER_RANDOM_RETRIEVAL, i);
         targetWord = "";
         numOfMoves = 0;
         currentLayer = 0;
+        fullGraph = new ArrayList<>();
+
+
         // Reset GraphApiMentor Variables
         clearVariables();
     }
@@ -49,7 +54,7 @@ public abstract class GameGraphApiMentor extends GraphApiMentor {
             graphUI.clearGraph();
             graphUI.graphRefresh();
             resetGameVariables();
-
+            allowanceStateChange(allowUndo(), allowRedo(), graphIsLoaded());
             return;
         }
         numOfMoves += 1;
@@ -82,10 +87,12 @@ public abstract class GameGraphApiMentor extends GraphApiMentor {
         fullGraph.add(gStruct);
 
         if(((fullGraph.size()-1) % NUMBER_RANDOM_RETRIEVAL  == 0)){
-            if (currentLayer == maxGameLayerDepth_){
-                targetWord = fullGraph.get(fullGraph.size()-1).getNodes()[0];
-                onEndLoad(false);
-                addToGraph(findInGraph(startWord));
+            if (currentLayer == GAME_GRAPH_DEPTH){
+                if(fullGraph.size()-1 == expectedNumOfNodes){
+                    targetWord = fullGraph.get(fullGraph.size()-1).getNodes()[0];
+                    onEndLoad(false);
+                    addToGraph(findInGraph(startWord));
+                }
             }
             else{
                 currentLayer +=1;

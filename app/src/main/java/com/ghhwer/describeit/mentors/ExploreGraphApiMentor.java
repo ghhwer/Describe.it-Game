@@ -43,6 +43,7 @@ public abstract class ExploreGraphApiMentor extends GraphApiMentor {
                 links.toArray(new String[links.size()])
         );
         addToGraph(gStruct);
+        onEndLoad(false);
     }
 
 

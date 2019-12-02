@@ -10,17 +10,18 @@ public class DatamuseWordMap {
     @SerializedName("tags")
     private String[] tags;
     public DatamuseWordMap(String word, int score, String[] tags){
-        this.word = word;
+        this.word = word.replaceAll("-"," ");
         this.score = score;
         this.tags = tags;
     }
 
     public String getWord() {
+        word = word.replaceAll("-"," ");
         return word;
     }
 
     public void setWord(String word) {
-        this.word = word;
+        this.word = word.replaceAll("-"," ");
     }
 
     public int getScore() {

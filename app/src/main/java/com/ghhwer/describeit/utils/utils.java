@@ -69,14 +69,6 @@ public class utils {
         }
         return out;
     }
-    public static <T> boolean includes(T[] Array, T matches){
-        if(Array == null)
-            return false;
-        for(T element : Array)
-            if(element == matches)
-                return true;
-        return false;
-    }
 
     // Android Helpers
     public static void hideSoftKeyboard(View view) {

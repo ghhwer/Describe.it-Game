@@ -7,7 +7,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -29,31 +28,31 @@ import static com.ghhwer.describeit.appmeat.GraphUiFunctions.setupLoadingAnimati
 import static com.ghhwer.describeit.appmeat.GraphUiFunctions.setupSearchTextbox;
 
 public class GraphActivity extends AppCompatActivity {
-    GraphUI graphUI = null;
-    GraphApiMentor graphApiMentor;
-    DescribeItSettings settings;
-    EditText searchText;
+
+    // UI Elements
     Forcelayout fLayout;
+    EditText searchText;
     ImageButton undoBtn;
     ImageButton redoBtn;
     ImageButton expandBtn;
-    ImageView loadingImage;
     TextView loadingText;
     TextView gameTarget;
+    TextView gameWinScreen;
+    TextView gameWinScore;
     ImageView gotoSettings;
     ImageView goBack;
+    ImageView loadingImage;
+
+    // Game Logic
+    GraphUI graphUI = null;
+    GraphApiMentor graphApiMentor;
+    DescribeItSettings settings;
 
     // On Create Method
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_graph);
-        final Intent settingsIntent = new Intent(this, SettingsActivity.class);
-        final Intent mainIntent = new Intent(this, MainActivity.class);
-
-        settings = new DescribeItSettings(this.getBaseContext());
-        USER_IN_MAIN = false;
-        Toast.makeText(this, "USER IN EXPLORE:"+USER_IN_EXPLORE, Toast.LENGTH_LONG).show();
 
         //Main View Variables
         searchText = findViewById(R.id.searchText);
@@ -66,21 +65,39 @@ public class GraphActivity extends AppCompatActivity {
         gotoSettings = findViewById(R.id.gotoSettings);
         goBack = findViewById(R.id.goBackFromGraph);
         gameTarget = findViewById(R.id.gameTargetWord);
+        gameWinScreen = findViewById(R.id.winScreen);
+        gameWinScore = findViewById(R.id.score);
 
+        // Default Visibility
         gameTarget.setVisibility(View.INVISIBLE);
+        gameWinScreen.setVisibility(View.INVISIBLE);
+        gameWinScore.setVisibility(View.INVISIBLE);
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // Intents
+        final Intent settingsIntent = new Intent(this, SettingsActivity.class);
+        final Intent mainIntent = new Intent(this, MainActivity.class);
+
+        // Cross App Variables
+        USER_IN_MAIN = false;
+        settings = new DescribeItSettings(this.getBaseContext());
         final AppCompatActivity appCompatActivity = this;
 
-        // Setup Graph-API Logic Modules
+        // Setup Graph-API Logic Modules Based on Enabled Mode
         graphUI = new GraphUI(fLayout);
         if (USER_IN_EXPLORE)
             graphApiMentor = createExploreApiMentor(
-                undoBtn,
-                redoBtn,
-                expandBtn,
-                loadingImage,
-                loadingText,
-                graphUI
+                    undoBtn,
+                    redoBtn,
+                    expandBtn,
+                    loadingImage,
+                    loadingText,
+                    graphUI
             );
         else
             graphApiMentor = createGameApiMentor(
@@ -90,6 +107,8 @@ public class GraphActivity extends AppCompatActivity {
                     gameTarget,
                     loadingImage,
                     loadingText,
+                    gameWinScreen,
+                    gameWinScore,
                     graphUI
             );
 
@@ -106,11 +125,6 @@ public class GraphActivity extends AppCompatActivity {
                 appCompatActivity,
                 graphApiMentor, graphUI);
         setupSearchTextbox(searchText, graphApiMentor);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
     }
 
 

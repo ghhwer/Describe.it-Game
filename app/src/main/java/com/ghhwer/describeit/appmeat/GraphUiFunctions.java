@@ -10,7 +10,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,7 +26,8 @@ import static com.ghhwer.describeit.utils.utils.switchImageBtnOnState;
 public class GraphUiFunctions {
 
     // Sets Up Loading Animations
-    protected static void setupLoadingAnimation(ImageView loadingImage, TextView loadingText){
+    protected static void setupLoadingAnimation(ImageView loadingImage,
+                                                TextView loadingText){
         // If Android Supports, make Loading GIF
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
             AnimatedImageDrawable anim = (AnimatedImageDrawable) loadingImage.getDrawable();;
@@ -50,7 +50,7 @@ public class GraphUiFunctions {
                                      final Intent settingsIntent,
                                      final Intent mainIntent,
                                      final AppCompatActivity appCompatActivity,
-                                     final GraphApiMentor exploreGraphApiMentor,
+                                     final GraphApiMentor graphApiMentor,
                                      final GraphUI graphUI) {
         // Settings Button
         gotoSettings.setOnClickListener(new View.OnClickListener() {
@@ -72,21 +72,21 @@ public class GraphUiFunctions {
         expandBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                exploreGraphApiMentor.expandOnTerm(graphUI.getSelectedNode());
+                graphApiMentor.expandOnTerm(graphUI.getSelectedNode());
             }
         });
         // Undo
         undoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                exploreGraphApiMentor.undo();
+                graphApiMentor.undo();
             }
         });
         // Redo
         redoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                exploreGraphApiMentor.redo();
+                graphApiMentor.redo();
             }
         });
     }
@@ -167,10 +167,13 @@ public class GraphUiFunctions {
                                                             final TextView gameTarget,
                                                             final ImageView loading,
                                                             final TextView loadingText,
+                                                            final TextView winScreen,
+                                                            final TextView winScore,
                                                             GraphUI graphUI){
         return new GameGraphApiMentor(graphUI) {
             @Override
             public void allowanceStateChange(boolean allowUndo, boolean allowRedo, boolean graphIsLoaded) {
+
                 switchImageBtnOnState(
                         allowUndo,
                         R.drawable.ic_action_undo,
@@ -190,6 +193,8 @@ public class GraphUiFunctions {
 
             @Override
             public void onStartLoad() {
+                winScreen.setVisibility(View.INVISIBLE);
+                winScore.setVisibility(View.INVISIBLE);
                 loading.setVisibility(View.VISIBLE);
                 loadingText.setVisibility(View.VISIBLE);
                 loadingText.setText("Loading..");
@@ -198,7 +203,9 @@ public class GraphUiFunctions {
 
             @Override
             public void signalWin(int score) {
-                Toast.makeText(gameTarget.getContext(),"You've Won! Moves:"+score, Toast.LENGTH_LONG).show();
+                winScreen.setVisibility(View.VISIBLE);
+                winScore.setText("Score: "+score+" Moves");
+                winScore.setVisibility(View.VISIBLE);
             }
 
             @Override

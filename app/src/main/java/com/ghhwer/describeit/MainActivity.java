@@ -25,9 +25,11 @@ public class MainActivity extends AppCompatActivity {
         ImageView settingsBtn = findViewById(R.id.gotoSettingsFromMain);
         Button gameBtn = findViewById(R.id.gameBtn);
         Button exploreBtn = findViewById(R.id.exploreBtn);
+
         final Intent settingsIntent = new Intent(this, SettingsActivity.class);
         final Intent graphIntent = new Intent(this, GraphActivity.class);
         final AppCompatActivity app = this;
+
         gameBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

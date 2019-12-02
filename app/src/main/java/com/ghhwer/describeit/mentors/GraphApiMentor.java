@@ -27,7 +27,6 @@ import static com.ghhwer.describeit.CrossAppVariables.SYNOM_KEY;
 import static com.ghhwer.describeit.CrossAppVariables.VERB_KEY;
 import static com.ghhwer.describeit.access.DatamuseRetrofit.getWordMapService;
 import static com.ghhwer.describeit.utils.utils.arrayListFromArray;
-import static com.ghhwer.describeit.utils.utils.includes;
 import static com.ghhwer.describeit.utils.utils.pickSample;
 
 public abstract class GraphApiMentor {
@@ -64,19 +63,25 @@ public abstract class GraphApiMentor {
         nodes.add(graphStruct.getName());
         nodes.addAll(Arrays.asList(graphStruct.getNodes()));
         links.addAll(Arrays.asList(graphStruct.getLinks()));
-        nodesHistory.add(nodes.toArray(new String[nodes.size()]));
-        linksHistory.add(links.toArray(new String[links.size()]));
         graphUI.clearGraph();
         graphUI.pushToGraph(
-                nodesHistory.get(nodesHistory.size()-1),
-                linksHistory.get(linksHistory.size()-1)
+                nodes.toArray(new String[nodes.size()]),
+                links.toArray(new String[links.size()])
         );
         graphUI.graphRefresh();
+
+
         historyPointer += 1;
-        while(historyPointer < nodesHistory.size()-1){
-                nodesHistory.remove(nodesHistory.size()-1);
-                linksHistory.remove(linksHistory.size()-1);
+
+        if(historyPointer > nodesHistory.size()-1){
+            nodesHistory.add(nodes.toArray(new String[nodes.size()]));
+            linksHistory.add(links.toArray(new String[links.size()]));
         }
+        else{
+            nodesHistory.set(historyPointer, nodes.toArray(new String[nodes.size()]));
+            linksHistory.set(historyPointer, links.toArray(new String[links.size()]));
+        }
+
 
         allowanceStateChange(allowUndo(), allowRedo(), graphIsLoaded());
     }
@@ -146,13 +151,21 @@ public abstract class GraphApiMentor {
 
     private List<DatamuseWordMap> performFilterOnSearch(List<DatamuseWordMap> data){
         ArrayList<DatamuseWordMap> r = new ArrayList<>(data);
+
         for(DatamuseWordMap e : data){
-            if (includes(e.getTags(), SYNOM_KEY) != SHOULD_GET_SYMNS &&
-                    includes(e.getTags(), ADJECTIVE_KEY) != SHOULD_GET_ADJECTIVE &&
-                    includes(e.getTags(), VERB_KEY) != SHOULD_GET_VERBS &&
-                    includes(e.getTags(), PROP_KEY) != SHOULD_GET_PROP &&
-                    includes(e.getTags(), NOUN_KEY) != SHOULD_GET_NOUNS)
+            if(e.getTags() != null){
+                if (
+                        Arrays.asList(e.getTags()).contains(SYNOM_KEY) == !SHOULD_GET_SYMNS &&
+                                Arrays.asList(e.getTags()).contains(ADJECTIVE_KEY) == !SHOULD_GET_ADJECTIVE &&
+                                Arrays.asList(e.getTags()).contains(VERB_KEY) == !SHOULD_GET_VERBS &&
+                                Arrays.asList(e.getTags()).contains( PROP_KEY) == !SHOULD_GET_PROP &&
+                                Arrays.asList(e.getTags()).contains(NOUN_KEY) == !SHOULD_GET_NOUNS
+                )
+                    r.remove(e);
+            }
+            else{
                 r.remove(e);
+            }
         }
         return r;
     }
@@ -166,9 +179,9 @@ public abstract class GraphApiMentor {
             public void onResponse(Call<List<DatamuseWordMap>> call, Response<List<DatamuseWordMap>> response) {
                 ArrayList<DatamuseWordMap> resp = new ArrayList<>(response.body());
                 if(resp != null){
-                    List<DatamuseWordMap> data = pickSample(resp, NUMBER_RANDOM_RETRIEVAL);
-                    List<DatamuseWordMap> body = performFilterOnSearch(data);
-                    onApiSuccess(search, (ArrayList<DatamuseWordMap>) body);
+                    ArrayList<DatamuseWordMap> body = (ArrayList<DatamuseWordMap>) performFilterOnSearch(resp);
+                    List<DatamuseWordMap> data = pickSample(body, NUMBER_RANDOM_RETRIEVAL);
+                    onApiSuccess(search, (ArrayList<DatamuseWordMap>) data);
                 }
             }
 
